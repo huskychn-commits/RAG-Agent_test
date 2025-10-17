@@ -1,0 +1,8 @@
+model_name: "BAAI/bge-large-zh-v1.5"
+input_dir: "d:/同步文件/课程作业/2025秋/人工智能/HW2/.aux/数据库-哈利波特/txt_batches"
+output_dir: "d:/同步文件/课程作业/2025秋/人工智能/HW2/.aux/数据库-哈利波特/embedding/output"
+temp_dir: "C:/Users/Husky/AppData/Local/Temp/faiss_temp"  # 使用系统临时目录
+device: "cpu"
+batch_size: 32
+max_length: 512
+normalize: true

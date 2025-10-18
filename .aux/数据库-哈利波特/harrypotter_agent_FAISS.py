@@ -152,13 +152,20 @@ class HarryPotterAgent:
         results = []
         for i, idx in enumerate(indices[0]):
             # 使用batch_info中的文件名信息构建路径
+            # 确保idx在有效范围内
+            idx = idx % len(self.batch_info) if len(self.batch_info) > 0 else 0
+            
             if idx < len(self.batch_info):
                 file_name = self.batch_info[idx]["file_name"]
                 # 将索引文件路径替换为txt_batches中的txt文件
                 txt_file = file_name.replace('.index', '.txt')
                 file_path = os.path.join(BASE_DIR, "txt_batches", txt_file).replace("\\", "/")
             else:
-                file_path = "unknown"
+                # 默认使用第一个batch的信息
+                file_name = self.batch_info[0]["file_name"]
+                txt_file = file_name.replace('.index', '.txt')
+                file_path = os.path.join(BASE_DIR, "txt_batches", txt_file).replace("\\", "/")
+                
             # 只保留文件路径和距离
             results.append((file_path, distances[0][i]))
         
@@ -178,7 +185,7 @@ class HarryPotterAgent:
 
 if __name__ == "__main__":
     agent = HarryPotterAgent()
-    question = "哈利波特的猫头鹰叫什么名字？"
+    question = "总结一下哈利波特学习漂浮咒的过程"
     # 测试get_top_k_files方法
     top_files = agent.get_top_k_files(question, 3)
     print(f"与问题最相关的前{len(top_files)}个文件:")
@@ -191,3 +198,24 @@ if __name__ == "__main__":
     #print(batch_results)
     for i, (file_path, distance) in enumerate(batch_results, 1):
         print(f"{i}. 文件: {file_path}, 距离: {distance:.4f}")
+
+
+def question_to_context(question, top_batches=3):
+    """将问题转换为上下文文本列表"""
+    agent = HarryPotterAgent()  # 创建HarryPotterAgent实例
+    batch_results = agent.find_relevant_batches(question, top_batches)  # 调用新方法
+    file_paths = [result[0] for result in batch_results]  # 提取文件路径
+    contexts = []
+    for path in file_paths:
+        with open(path, 'r', encoding='utf-8-sig', errors='ignore') as f:
+            contexts.append(f.read())
+    return contexts
+
+if __name__ == "__main__":
+    # 示例使用
+    sample_question = "哈利波特的父亲是谁"
+    results = question_to_context(sample_question)
+    
+    # 输出前50个字符
+    for i, text in enumerate(results):
+        print(f"段落{i+1}前50字符: \n{text[:50]}\n")

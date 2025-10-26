@@ -11,7 +11,7 @@
 #### 1. 数据预处理阶段
 **PDF转文本处理**
 ```bash
-python3 pdf_convert_to_txt.py
+python3 .aux/数据库-哈利波特/pdf_convert_to_txt.py
 ```
 - 自动处理PDF资料，提取文本内容
 - 建立原始文本数据库
@@ -19,7 +19,7 @@ python3 pdf_convert_to_txt.py
 #### 2. 语料清洗阶段
 **LLM支持的自动语料清洗**
 ```bash
-python3 txt_batches/Corpus_Typo.py
+python3 .aux/数据库-哈利波特/txt_batches/去掉多余空行/Corpus_Typo.py
 ```
 - 实现格式清洗和规范化
 - 使用LLM进行智能语料处理
@@ -27,7 +27,7 @@ python3 txt_batches/Corpus_Typo.py
 #### 3. 向量化处理阶段
 **文本资料库转FAISS语义向量**
 ```bash
-python3 embedding/processor.py
+python3 .aux/数据库-哈利波特/embedding/processor.py
 ```
 - 自动将文本资料库转换为FAISS语义向量
 - 建立语料库的查找索引
